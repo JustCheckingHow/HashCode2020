@@ -11,13 +11,6 @@ def visualise_basic(filename):
     total_books = len(book_values_dict)
 
     lib_scores = {}
-<<<<<<< HEAD
-    for lib_id, lib in enumerate(libs):
-        lib_score = sum([book_values_dict[b] for b in book_values_dict])
-        # lib_scores[lib_id] 
-    # 
-visualise_basic('data/a_example.txt')
-=======
     lib_days = {}
     lib_unique = {}
     lib_weighted = {}
@@ -89,4 +82,3 @@ visualise_basic('data/a_example.txt')
     
 # visualise_basic('data/b_read_on.txt')
 visualise_basic('data/c_incunabula.txt')
->>>>>>> f4d2c04f4e4a3de55c5e7d708f7d816b559e98df

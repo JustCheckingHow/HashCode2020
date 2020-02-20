@@ -6,11 +6,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class NaiveAlgo:
-    def __init__(self, libs, book_vals, day_no):
+    def __init__(self, libs, book_vals, days):
         self.libraries = np.array(libs)
         self.book_vals = book_vals
-        self.found_books = None
-        self.day_no = day_no
+        self.processed = set()
+        self.all_days = days
+        self.day = 0
 
     def get_books_priority(self, library):
         mapped = [self.book_vals[i] for i in library.books]
@@ -33,11 +34,24 @@ class NaiveAlgo:
         self.found_books = set(lib.books)
 
         for i, lib in zip(tqdm.tqdm(efficiency), self.libraries[efficiency]):
-            result_dict[i] = lib.books[self.get_books_priority(lib)[::-1]]
+            self.day += lib.signup_time
+
+            sorted_books = lib.books[self.get_books_priority(lib)[::-1]]
+
+            result_dict[i] = self.get_parsable_books(sorted_books, lib.number_of_scan)
 
         plt.hist(efficiency_vals)
         plt.show()
         return result_dict, efficiency
+
+    def get_parsable_books(self, sorted_books, number_of_scan):
+        new_books = set(sorted_books) - self.processed
+        
+        num_books_parsable = (self.all_days - self.day) * (number_of_scan)
+        self.processed += list(new_books)[:num_books_parsable]
+
+        return list(new_books)[:num_books_parsable]
+
 
 if __name__=="__main__":
     libs, books_values, days = parse_data("data/e_so_many_books.txt")
