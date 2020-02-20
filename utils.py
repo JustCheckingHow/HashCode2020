@@ -5,6 +5,7 @@ class Library:
         self.signup_time = int(signup_time)
         self.number_of_scans = int(number_of_scans)
         self.books = [int(b) for b in books]
+        self._mapped = None
 
     @staticmethod
     def parse(line1, line2):
@@ -14,7 +15,12 @@ class Library:
         books = [int(x) for x in line2.split()]
         return Library(books, signup_time, books_per_day)
 
+    def get_mapped(self, val_map):
+        if self._mapped is None:
+            self._mapped = [val_map[i] for i in self.books]
+        return self._mapped
+
     def get_efficiency(self, val_map):
-        mapped = [val_map[i] for i in self.books]
+        mapped = self.get_mapped(val_map)
 
         return (np.sum(mapped)/self.signup_time)/self.number_of_scans
