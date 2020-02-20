@@ -7,13 +7,12 @@ def save_output(filename, libs):
     f = open(filename, 'w')
     
     f.write(str(len(libs)) + '\n')
-    
+    assert len(list(set(libs))) == len(libs)
+    print(len(libs))
     for ID in libs:     
         f.write(f"{ID} {len(libs[ID])}\n")
-
-        for book_id in libs[ID]:
-            f.write(str(book_id) + ' ')
-        f.write('\n')
+        out_str = ' '.join([str(l) for l in libs[ID].tolist()])
+        f.write(out_str + '\n')
 
     f.close()
 
