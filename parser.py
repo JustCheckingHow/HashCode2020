@@ -8,9 +8,10 @@ def parse_data(filename):
         temp = f.readline().split(" ")
         book_no = temp[0]
         library_no = int(temp[1])
-        days = temp[2]
+        days = int(temp[2])
 
         books_values = f.readline().split(" ")
+        books_values = [int(b) for b in books_values]
         libs = []
         for i in range(library_no):
             line1 = f.readline()

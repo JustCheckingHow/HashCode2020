@@ -6,5 +6,6 @@ from parser import parse_data
 
 def visualise_basic(filename):
     libs, books_values, days =  parse_data(filename)
+    print(libs, books_values, days)
 
-
+visualise_basic('data/a_example.txt')
