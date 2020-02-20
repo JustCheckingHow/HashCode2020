@@ -1,3 +1,5 @@
+import numpy as np
+
 class Library:
     def __init__(self, books, signup_time, number_of_scans):
         self.signup_time = int(signup_time)
@@ -12,4 +14,7 @@ class Library:
         books = [int(x) for x in line2.split()]
         return Library(books, signup_time, books_per_day)
 
+    def get_efficiency(self, val_map):
+        mapped = [val_map[i] for i in self.books]
 
+        return np.sum(mapped)/self.signup_time
