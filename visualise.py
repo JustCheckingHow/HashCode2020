@@ -87,14 +87,19 @@ def visualise_time(filename):
     book_count = Counter(book_values_dict)
     total_books_value = sum(book_values_dict.values())
     total_books = len(book_values_dict)
-    times, scans = [], []
-    for i in tqdm(range(len(libraries))):
-        times.append(libraries[i].number_of_scans)
-        scans.append(libraries[i].signup_time)
-
+    times, scans, books = [], [], []
+    libs = {}
+    for i in tqdm(range(len(libraries))): 
+        times.append(libraries[i].signup_time)
+        scans.append(libraries[i].number_of_scans)
+        books.append(len(libraries[i].books))
+        libs[i] = {
+            'signup':  libraries[i].signup_time
+        }
     libs = [i for i in range(len(libraries))]
     times = sorted(times)
-    scans = sorted(times)
+    scans = sorted(scans)
+
     fig4, ax4 = plt.subplots()
     ax4.bar(libs, times, color='orange')
     ax4.set_xticks(libs, libs)
@@ -105,12 +110,17 @@ def visualise_time(filename):
     ax5.set_xticks(libs, libs)
     ax5.set_title("Library multi scans")
 
-
     fig1, ax1 = plt.subplots()
     book_values = [x[1] for x in book_count.most_common()]
     ax1.hist(book_values, color='r')
     ax1.set_title("Book values")
+
+    fig2, ax2 = plt.subplots()
+    ax2.hist(books, color='b')
+    ax2.set_title("Books")
+
     plt.show()
-# visualise_basic('data/b_read_on.txt')
+# visualise_time('data/b_read_on.txt')
 # visualise_basic('data/d_tough_choices.txt')
-visualise_time('data/e_so_many_books.txt')
+# visualise_time('data/e_so_many_books.txt')
+visualise_time('data/c_incunabula.txt')
