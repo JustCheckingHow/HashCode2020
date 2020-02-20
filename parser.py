@@ -8,7 +8,7 @@ if __name__ == "__main__":
     with open(DATA) as f:
         temp = f.readline().split(" ")
         book_no = temp[0]
-        library_no = temp[1]
+        library_no = int(temp[1])
         days = temp[2]
 
         books_values = f.readline().split(" ")
