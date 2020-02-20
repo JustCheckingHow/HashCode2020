@@ -120,7 +120,16 @@ def visualise_time(filename):
     ax2.set_title("Books")
 
     plt.show()
-# visualise_time('data/b_read_on.txt')
-# visualise_basic('data/d_tough_choices.txt')
+# <<<<<<< HEAD
+# # visualise_time('data/b_read_on.txt')
+# # visualise_basic('data/d_tough_choices.txt')
+# # visualise_time('data/e_so_many_books.txt')
+# visualise_time('data/c_incunabula.txt')
+# =======
+# # visualise_basic('data/b_read_on.txt')
+# <<<<<<< HEAD
+# visualise_basic('data/c_incunabula.txt')
+# =======
+# # visualise_basic('data/d_tough_choices.txt')
 # visualise_time('data/e_so_many_books.txt')
-visualise_time('data/c_incunabula.txt')
+
