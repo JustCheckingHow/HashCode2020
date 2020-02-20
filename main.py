@@ -3,22 +3,22 @@ from parser_books import parse_data
 import sys
 import glob
 
+
 def save_output(filename, libs):
     f = open(filename, 'w')
-    
+
     f.write(str(len(libs)) + '\n')
-    assert len(list(set(libs))) == len(libs)
-    print(len(libs))
-    for ID in libs:     
+    for ID in libs:
         f.write(f"{ID} {len(libs[ID])}\n")
-        out_str = ' '.join([str(l) for l in libs[ID].tolist()])
+        out_str = ' '.join([str(l) for l in list(libs[ID])])
         f.write(out_str + '\n')
 
     f.close()
 
+
 if __name__ == "__main__":
     fname = sys.argv[1]
-    if fname=="all":
+    if fname == "all":
         for fname in glob.glob("data/*.txt"):
             libs, books_values, days = parse_data(fname)
             algo = NaiveAlgo(libs, books_values, days)

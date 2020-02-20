@@ -4,6 +4,7 @@ from utils import Library
 from parser_books import parse_data
 import numpy as np
 import matplotlib.pyplot as plt
+from collections import defaultdict
 
 class NaiveAlgo:
     def __init__(self, libs, book_vals, days):
@@ -12,42 +13,61 @@ class NaiveAlgo:
         self.processed = set()
         self.all_days = days
         self.day = 0
+        self.freq = defaultdict(int)
+        self.prepare()
 
     def get_books_priority(self, library):
-        mapped = [self.book_vals[i] for i in library.books]
+        mapped = [self.book_vals[i]/self.freq[i] for i in library.books]
         return np.argsort(mapped)
 
     def library_novelty(self, library):
         new_books = set(library.books)-self.found_books
 
+    def prepare(self):
+        for lib in self.libraries:
+            for book in lib.books:
+                self.freq[book] += 1
+
     def solve(self):
 
-        efficiency_vals = [i.get_efficiency(self.book_vals, self.all_days) for i in self.libraries]
-        efficiency = np.argsort(efficiency_vals)[::-1]
 
-        # Parse info of the most efficient library
         result_dict = {}
-        # lib = self.libraries[efficiency[0]]
-        # result_dict[0] = self.get_books_priority(lib)[::-1]
-        # self.found_books = set(lib.books)
 
-        for i, lib in zip(tqdm.tqdm(efficiency), self.libraries[efficiency]):
-            self.day += lib.signup_time
+        # for i, lib in zip(tqdm.tqdm(efficiency), self.libraries[efficiency]):
+        #     sorted_books = lib.books[self.get_books_priority(lib)[::-1]]
+        #     res = self.get_parsable_books(sorted_books, lib.number_of_scans, lib.signup_time)
+        #     if len(res)!=0:
+        #         result_dict[i] = res
+        #         self.day += lib.signup_time
 
-            sorted_books = lib.books[self.get_books_priority(lib)[::-1]]
+        #     if self.day>self.all_days:
+        #         break
 
-            result_dict[i] = self.get_parsable_books(sorted_books, lib.number_of_scans)
+        while self.all_days > self.day:
+            efficiency_vals = [i.get_efficiency(self.book_vals, self.all_days) for i in self.libraries]
+            efficiency = np.argsort(efficiency_vals)[::-1]
+            for row in range(500):
+                lib_id = efficiency[row]
+                lib = self.libraries[lib_id]
 
-            if self.day>self.all_days:
-                break
+                sorted_books = lib.books[self.get_books_priority(lib)[::-1]]
+                res = self.get_parsable_books(sorted_books, lib.number_of_scans, lib.signup_time)
+                if len(res)!=0:
+                    result_dict[lib.id] = res
+                    self.day += lib.signup_time
+                    self.libraries = np.delete(self.libraries, lib.id)
+                
 
         return result_dict, efficiency
 
-    def get_parsable_books(self, sorted_books, number_of_scan):
+    def get_parsable_books(self, sorted_books, number_of_scan, signup):
         new_books = set(sorted_books) - self.processed
         
-        num_books_parsable = (self.all_days - self.day) * (number_of_scan)
-        new_books = set(list(new_books)[:num_books_parsable])
+        num_books_parsable = (self.all_days - self.day - signup) * (number_of_scan)
+        lst = list(new_books)[:num_books_parsable]
+        for i in lst:
+            self.book_vals[i] = 0
+        new_books = set(lst)
         self.processed = self.processed.union(new_books)
 
         return new_books

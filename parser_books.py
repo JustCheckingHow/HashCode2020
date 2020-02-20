@@ -16,5 +16,5 @@ def parse_data(filename):
         for i in range(library_no):
             line1 = f.readline()
             line2 = f.readline()
-            libs.append(Library.parse(line1, line2))
+            libs.append(Library.parse(line1, line2, i))
     return libs, book_values_dict, days
