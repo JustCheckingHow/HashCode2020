@@ -18,7 +18,6 @@ def save_output(filename, libs):
     f.close()
 
 if __name__ == "__main__":
-<<<<<<< HEAD
     fname = sys.argv[1]
     if fname=="all":
         for fname in glob.glob("data/*.txt"):
@@ -32,9 +31,3 @@ if __name__ == "__main__":
         algo = NaiveAlgo(libs, books_values, days)
         libs, _ = algo.solve()
         save_output(f"solution_{fname.split('/')[-1]}", libs)
-=======
-    libs, books_values, days = parse_data("data/a_example.txt")
-    algo = NaiveAlgo(libs, books_values, days)
-    libs, _ = algo.solve()
-    save_output("a_output.txt", libs)
->>>>>>> a63708fb32fd7c5c49282243bb5e6dd5f2a9d1e3
