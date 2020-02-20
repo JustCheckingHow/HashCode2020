@@ -17,4 +17,4 @@ class Library:
     def get_efficiency(self, val_map):
         mapped = [val_map[i] for i in self.books]
 
-        return np.sum(mapped)/self.signup_time
+        return (np.sum(mapped)/self.signup_time)/self.number_of_scans
