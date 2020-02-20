@@ -17,6 +17,6 @@ def save_output(filename, libs):
 
 if __name__ == "__main__":
     libs, books_values, days = parse_data("data/a_example.txt")
-    algo = NaiveAlgo(libs, books_values)
+    algo = NaiveAlgo(libs, books_values, days)
     libs, _ = algo.solve()
     save_output("a_output.txt", libs)
