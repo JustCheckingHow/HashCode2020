@@ -2,7 +2,7 @@ from algo import NaiveAlgo
 from parser_books import parse_data
 
 def save_output(filename, libs):
-    f = open(filename, 'a')
+    f = open(filename, 'w')
     
     f.write(str(len(libs)) + '\n')
     
