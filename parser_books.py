@@ -17,4 +17,4 @@ def parse_data(filename):
             line1 = f.readline()
             line2 = f.readline()
             libs.append(Library.parse(line1, line2))
-    return libs, book_values_dict, days, book_values_dict
+    return libs, book_values_dict, days
