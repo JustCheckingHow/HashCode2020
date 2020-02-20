@@ -1,6 +1,5 @@
 import pandas as pd
 from utils import Library
-import tqdm
 
 
 def parse_data(filename):
@@ -12,9 +11,10 @@ def parse_data(filename):
 
         books_values = f.readline().split(" ")
         books_values = [int(b) for b in books_values]
+        book_values_dict = {i: b for i, b in enumerate(books_values)}
         libs = []
-        for i in tqdm.trange(library_no):
+        for i in range(library_no):
             line1 = f.readline()
             line2 = f.readline()
             libs.append(Library.parse(line1, line2))
-    return libs, books_values, days 
+    return libs, book_values_dict, days
