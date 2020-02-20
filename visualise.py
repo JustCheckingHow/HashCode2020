@@ -80,5 +80,37 @@ def visualise_basic(filename):
 
     plt.show()
     
+
+def visualise_time(filename):
+    libraries, book_values_dict, days =  parse_data(filename)
+    print(f"DAYS {days}")
+    book_count = Counter(book_values_dict)
+    total_books_value = sum(book_values_dict.values())
+    total_books = len(book_values_dict)
+    times, scans = [], []
+    for i in tqdm(range(len(libraries))):
+        times.append(libraries[i].number_of_scans)
+        scans.append(libraries[i].signup_time)
+
+    libs = [i for i in range(len(libraries))]
+    times = sorted(times)
+    scans = sorted(times)
+    fig4, ax4 = plt.subplots()
+    ax4.bar(libs, times, color='orange')
+    ax4.set_xticks(libs, libs)
+    ax4.set_title("Library signup days")
+
+    fig5, ax5 = plt.subplots()
+    ax5.bar(libs, scans, color='g')
+    ax5.set_xticks(libs, libs)
+    ax5.set_title("Library multi scans")
+
+
+    fig1, ax1 = plt.subplots()
+    book_values = [x[1] for x in book_count.most_common()]
+    ax1.hist(book_values, color='r')
+    ax1.set_title("Book values")
+    plt.show()
 # visualise_basic('data/b_read_on.txt')
-visualise_basic('data/c_incunabula.txt')
+# visualise_basic('data/d_tough_choices.txt')
+visualise_time('data/e_so_many_books.txt')
