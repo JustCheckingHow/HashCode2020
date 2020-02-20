@@ -3,7 +3,7 @@ import numpy
 from utils import Library
 from parser_books import parse_data
 import numpy as np
-
+import matplotlib.pyplot as plt
 
 class NaiveAlgo:
     def __init__(self, libs, book_vals, day_no):
@@ -19,12 +19,11 @@ class NaiveAlgo:
     def library_novelty(self, library):
         new_books = set(library.books)-self.found_books
 
-
     def solve(self):
         order = []
 
-        efficiency = [i.get_efficiency(self.book_vals, self.day_no) for i in self.libraries]
-        efficiency = np.argsort(efficiency)[::-1]
+        efficiency_vals = [i.get_efficiency(self.book_vals, self.day_no) for i in self.libraries]
+        efficiency = np.argsort(efficiency_vals)[::-1]
         order.append(efficiency[0])
 
         # Parse info of the most efficient library
@@ -36,9 +35,11 @@ class NaiveAlgo:
         for i, lib in zip(tqdm.tqdm(efficiency), self.libraries[efficiency]):
             result_dict[i] = lib.books[self.get_books_priority(lib)[::-1]]
 
+        plt.hist(efficiency_vals)
+        plt.show()
         return result_dict, efficiency
 
 if __name__=="__main__":
-    libs, books_values, days = parse_data("data/a_example.txt")
+    libs, books_values, days = parse_data("data/e_so_many_books.txt")
     algo = NaiveAlgo(libs, books_values, days)
-    print(algo.solve())
+    algo.solve()
