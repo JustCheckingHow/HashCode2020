@@ -5,7 +5,7 @@ class Library:
         self.books = []
 
     @staticmethod
-    def parse(self, line1, line2):
+    def parse(line1, line2):
         signup_time = line1.split(" ")[1]
         books_per_day = line1.split(" ")[2]
 
