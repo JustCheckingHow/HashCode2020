@@ -4,7 +4,7 @@ class Library:
     def __init__(self, books, signup_time, number_of_scans):
         self.signup_time = int(signup_time)
         self.number_of_scans = int(number_of_scans)
-        self.books = [int(b) for b in books]
+        self.books = np.array(books).astype(int)
         self._mapped = None
 
     @staticmethod
@@ -20,7 +20,7 @@ class Library:
             self._mapped = [val_map[i] for i in self.books]
         return self._mapped
 
-    def get_efficiency(self, val_map):
+    def get_efficiency(self, val_map, day_no):
         mapped = self.get_mapped(val_map)
 
         return (np.sum(mapped)/self.signup_time)/self.number_of_scans

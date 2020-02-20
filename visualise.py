@@ -16,7 +16,5 @@ def visualise_basic(filename):
     for lib_id, lib in enumerate(libs):
         lib_score = sum([book_values_dict[b] for b in book_values_dict])
         # lib_scores[lib_id] 
-
-
     # 
 visualise_basic('data/a_example.txt')
