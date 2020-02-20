@@ -1,11 +1,10 @@
 import pandas as pd
 from utils import Library
 
-DATA = "data/a_example.txt"
 
 
-if __name__ == "__main__":
-    with open(DATA) as f:
+def parse_data(filename):
+    with open(filename) as f:
         temp = f.readline().split(" ")
         book_no = temp[0]
         library_no = temp[1]
@@ -17,3 +16,4 @@ if __name__ == "__main__":
             line1 = f.readline()
             line2 = f.readline()
             libs.append(Library.parse(line1, line2))
+    return libs, books_values, days 
