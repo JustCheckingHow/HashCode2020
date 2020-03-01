@@ -38,10 +38,10 @@ if __name__ == "__main__":
     clf = NaiveAlgo()
 
     parameters = {
-        '_number_of_scans_power': (1, 5),
-        '_mapped_power': (1, 5),
-        '_signup_power': (1, 5),
-        '_number_of_scans_power': (1, 5)
+        '_number_of_scans_power': [i for i in range(1, 5)],
+        '_mapped_power': [i for i in range(1, 5)],
+        '_signup_power': [i for i in range (1, 5)],
+        '_number_of_scans_power': [i for i in range(1, 5)]
     }
 
     array = [libs, books_values, days]
