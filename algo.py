@@ -53,7 +53,7 @@ class NaiveAlgo:
     def get_parsable_books(self, sorted_books, number_of_scan, signup):
         new_books = set(sorted_books) - self.processed
         
-        num_books_parsable = (self.all_days - self.day - signup) * (number_of_scan)
+        num_books_parsable = max(0, (self.all_days - self.day - signup) * (number_of_scan))
         lst = list(new_books)[:num_books_parsable]
         # for i in lst:
         #     self.book_vals[i] = 0
