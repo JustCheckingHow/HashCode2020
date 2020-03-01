@@ -5,6 +5,12 @@ from parser_books import parse_data
 import glob
 import sys 
 import os 
+
+
+fname = sys.argv[1]
+clf = NaiveAlgo()
+save_folder = 'data'
+fname = glob.glob(f"{save_folder}/{fname}*.txt")[0].replace('\\', '/')
 # We only need to specify the algorithm and hyperparameters to use:
 config = {
     # We pick the Bayes algorithm:
@@ -26,11 +32,12 @@ config = {
             'type': 'float',
             'min': 0.1,
             'max': 6,
-        }
+        },
     },
 
     # Declare what we will be optimizing, and how:
     "spec": {
+        "filename": fname,
         "metric": "score",
         "objective": "maximise",
     },
@@ -42,10 +49,7 @@ opt = comet_ml.Optimizer(config,
                          project_name="optimizer-search-GH2020")
 
 # define fit function here!
-fname = sys.argv[1]
-clf = NaiveAlgo()
-save_folder = 'data'
-fname = glob.glob(f"{save_folder}/{fname}*.txt")[0].replace('\\', '/')
+
 libs, books_values, days = parse_data(fname)
 
 parameters = {
