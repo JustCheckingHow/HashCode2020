@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Library:
     def __init__(self, books, signup_time, number_of_scans, id):
         self.id = id
@@ -24,4 +25,6 @@ class Library:
     def get_efficiency(self, val_map, day_no):
         mapped = self.get_mapped(val_map)
 
-        return (np.sum(mapped)/self.signup_time)*(self.number_of_scans**2)
+        return (np.sum(mapped) / self.signup_time * np.sqrt(len(mapped))) * (
+            self.number_of_scans ** 2
+        )

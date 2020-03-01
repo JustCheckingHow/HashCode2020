@@ -1,5 +1,6 @@
 import numpy
 
+
 class ScoreCounter:
     def __init__(self, book_vals):
         self.processed = set()
