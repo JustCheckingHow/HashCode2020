@@ -26,6 +26,7 @@ def calc(A):
     # global maxi
     maxi = 0
     best = []
+    print("calc:", fname)
     for B in arr:
         for C in arr:
             points = 0
@@ -36,7 +37,6 @@ def calc(A):
                 libs[i].C = C
             algo = NaiveAlgo(libs, books_values, days)
             libs, _ = algo.solve()
-<<<<<<< HEAD
             points = algo.counter.score
             maxi = max(maxi, points)
             if points == maxi:
@@ -45,17 +45,29 @@ def calc(A):
             print(A, B, C, points, maxi)
     return (best, maxi)
 
+def search(fname_temp):
+    maxi = 0
+    global fname
+    fname = glob.glob(f"data/{fname_temp}*.txt")[0].replace('\\', '/')
+    print(fname)
+    with Pool(6) as p:
+        out = p.map(calc, arr)
+    print(out)
 
 if __name__ == "__main__":
     fname = sys.argv[1]
-    maxi = 0
-
-    fname = glob.glob(f"data/{fname}*.txt")[0].replace('\\', '/')
-    with Pool(6) as p:
-        out = p.map(calc, arr)
+    #print("fname: ", fname)
+    if len(sys.argv) == 3 and sys.argv[2] == '-s':
+        #print(fname)
+        search(fname)
+        exit(0)
+    points = 0
     
-    print(out)
-=======
+    if fname == "all":
+        for fname in glob.glob("data/*.txt"):
+            libs, books_values, days = parse_data(fname)
+            algo = NaiveAlgo(libs, books_values, days)
+            libs, _ = algo.solve()
             points += algo.counter.score
 
             f = fname.split("\\")[-1]
@@ -68,4 +80,3 @@ if __name__ == "__main__":
         save_output(f"solution_{fname.split('/')[-1]}", libs)
 
     print(points)
->>>>>>> 0a1d55be895b36c8b0114e30d888c9e3ef7b7523
