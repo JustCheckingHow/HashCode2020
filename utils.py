@@ -10,20 +10,23 @@ class Library:
         self._mapped = None
 
         # internal efficiency params
+
+        self._number_of_scans_power = 1
+        self._number_of_scan_weight = 1
+
+        self._signup_time_weight = 1
+        self._mapped_sum_weight = 1
+
         self.param_names = [
             '_number_of_scans_power', '_number_of_scan_weight',
             '_signup_time_weight', '_mapped_sum_weight'
         ]
         if set(kwargs.keys()).issubset(set(self.param_names)):
-            self.set_params(kwargs)
+            self.set_params(**kwargs)
         else:
             raise AttributeError(
                 f"The passed kwargs do not contain all required params!")
-        # self._number_of_scans_power = 1
-        # self._number_of_scan_weight = 1
 
-        # self._signup_time_weight = 1
-        # self._mapped_sum_weight = 1
 
     def get_params(self, deep=False):
         """
