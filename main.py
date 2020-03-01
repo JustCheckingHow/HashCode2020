@@ -38,17 +38,22 @@ if __name__ == "__main__":
     clf = NaiveAlgo()
 
     parameters = {
-        '_number_of_scans_power': [i for i in range(1, 5)],
-        '_mapped_power': [i for i in range(1, 5)],
-        '_signup_power': [i for i in range (1, 5)],
-        '_number_of_scans_power': [i for i in range(1, 5)]
+        '_number_of_scans_power': [i for i in np.arange(0.2, 2, 0.3)],
+        '_mapped_power': [i for i in np.arange(0.2, 2, 0.3)],
+        '_signup_power': [i for i in np.arange(0.2, 2, 0.3)],
     }
 
     array = [libs, books_values, days]
 
     clf.grid_search(inputs=array, param_grid=parameters, processors=4)
 
-    
+    # params = {
+    #     '_mapped_power': 3,
+    #     '_number_of_scans_power': 1,
+    #     '_signup_power': 3
+    # }
+
+    # clf.fit([array, list(params.keys()), list(params.values())])
     # points = 0
     # if fname == "all":
     #     for fname in glob.glob("data/*.txt"):

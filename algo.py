@@ -11,6 +11,18 @@ import itertools
 from multiprocessing import Pool
 
 
+def save_output(filename, libs):
+    f = open(filename, "w")
+
+    f.write(str(len(libs)) + "\n")
+    for ID in libs:
+        f.write(f"{ID} {len(libs[ID])}\n")
+        out_str = " ".join([str(l) for l in list(libs[ID])])
+        f.write(out_str + "\n")
+
+    f.close()
+
+
 class NaiveAlgo:
     def __init__(self,
                  _number_of_scans_power=2,
@@ -89,7 +101,7 @@ class NaiveAlgo:
 
             if self.day > self.all_days:
                 break
-        
+
         self.counter.params = self.param_dict
         self.counter.summary()
         return result_dict, efficiency
@@ -126,8 +138,8 @@ class NaiveAlgo:
         self.prepare()
         # initialise score counter
         self.counter = ScoreCounter(self.book_vals)
-        self.solve()
-        return params, self.counter.score
+        libs, _ = self.solve()
+        return libs, param_dict, self.counter.score
 
     def grid_search(self, inputs, param_grid, processors=4):
         param_names = sorted(param_grid)
@@ -139,9 +151,12 @@ class NaiveAlgo:
 
             max_res = 0
             max_params = None
+            max_libs = None
             for res in result:
-                pm, score = res
-                if score > max_res:
+                libs, pm, score = res
+                if score >= max_res:
                     max_res = score
                     max_params = pm
+                    max_libs = libs
             print(max_params, max_res)
+            save_output(f"solutions/solution.txt", max_libs)
