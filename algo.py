@@ -103,7 +103,7 @@ class NaiveAlgo:
                 break
 
         self.counter.params = self.param_dict
-        self.counter.summary()
+        # self.counter.summary()
         return result_dict, efficiency
 
     def get_parsable_books(self, sorted_books, number_of_scans, signup):
@@ -159,4 +159,7 @@ class NaiveAlgo:
                     max_params = pm
                     max_libs = libs
             print(max_params, max_res)
-            save_output(f"solutions/solution.txt", max_libs)
+            # save_output(f"solutions/solution.txt", max_libs)
+            return max_libs, max_params
+
+

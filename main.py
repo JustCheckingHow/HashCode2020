@@ -5,21 +5,8 @@ import sys
 import numpy as np
 from sklearn.model_selection import GridSearchCV
 
-from algo import NaiveAlgo
+from algo import NaiveAlgo, save_output
 from parser_books import parse_data
-
-
-def save_output(filename, libs):
-    f = open(filename, "w")
-
-    f.write(str(len(libs)) + "\n")
-    for ID in libs:
-        f.write(f"{ID} {len(libs[ID])}\n")
-        out_str = " ".join([str(l) for l in list(libs[ID])])
-        f.write(out_str + "\n")
-
-    f.close()
-
 
 if __name__ == "__main__":
     save_folder = 'data'
@@ -34,6 +21,7 @@ if __name__ == "__main__":
     }
 
     fname = glob.glob(f"{save_folder}/{fname}*.txt")[0].replace('\\', '/')
+
     libs, books_values, days = parse_data(fname)
     clf = NaiveAlgo()
 
@@ -45,30 +33,33 @@ if __name__ == "__main__":
 
     array = [libs, books_values, days]
 
-    clf.grid_search(inputs=array, param_grid=parameters, processors=4)
+    max_libs, max_params = clf.grid_search(inputs=array,
+                                           param_grid=parameters,
+                                           processors=4)
+    print(f"Done optimising! {max_params}")
+    fname = 'all'
+    clf.fit([[libs, books_values, days],
+             list(max_params.keys()),
+             list(max_params.values())])
 
-    # params = {
-    #     '_mapped_power': 3,
-    #     '_number_of_scans_power': 1,
-    #     '_signup_power': 3
-    # }
+    print("DOING FOR ALL")
+    points = 0
+    if fname == "all":
+        for fname in glob.glob("data/*.txt"):
+            libs, books_values, days = parse_data(fname)
 
-    # clf.fit([array, list(params.keys()), list(params.values())])
-    # points = 0
-    # if fname == "all":
-    #     for fname in glob.glob("data/*.txt"):
-    #         libs, books_values, days = parse_data(fname)
-    #         algo = NaiveAlgo(libs, books_values, days)
-    #         libs, _ = algo.solve()
-    #         points += algo.counter.score
+            max_libs, _, score = clf.fit([[libs, books_values, days],
+                                   list(max_params.keys()),
+                                   list(max_params.values())])
+            points += score
 
-    #         f = fname.split("\\")[-1]
-    #         save_output(f"3_solution_{f}", libs)
+            f = fname.split("\\")[-1]
+            save_output(f"3_solution_{f}", max_libs)
     # else:
     #     fname = glob.glob(f"data/{fname}*.txt")[0].replace("\\", "/")
     #     libs, books_values, days = parse_data(fname)
     #     algo = NaiveAlgo(libs, books_values, days)
     #     libs, _ = algo.solve()
-    #     save_output(f"solution_{fname.split('/')[-1]}", libs)
+    #     save_output(f"{solution_folder}/solution_{fname.split('/')[-1]}", libs)
 
-    # print(points)
+    print(points)
