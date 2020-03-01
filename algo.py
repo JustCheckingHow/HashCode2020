@@ -1,10 +1,10 @@
 import tqdm
-import numpy
 from utils import Library
 from parser_books import parse_data
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import defaultdict
+from score_counter import ScoreCounter
 
 class NaiveAlgo:
     def __init__(self, libs, book_vals, days):
@@ -15,6 +15,8 @@ class NaiveAlgo:
         self.day = 0
         self.freq = defaultdict(int)
         self.prepare()
+
+        self.counter = ScoreCounter(book_vals)
 
     def get_books_priority(self, library):
         mapped = [self.book_vals[i]/self.freq[i] for i in library.books]
@@ -38,11 +40,14 @@ class NaiveAlgo:
             res = self.get_parsable_books(sorted_books, lib.number_of_scans, lib.signup_time)
             if len(res)!=0:
                 result_dict[i] = res
+                self.counter.add(list(res))
+
                 self.day += lib.signup_time
 
             if self.day>self.all_days:
                 break
-
+            
+        print(self.counter.score)
         return result_dict, efficiency
 
     def get_parsable_books(self, sorted_books, number_of_scan, signup):
@@ -50,8 +55,8 @@ class NaiveAlgo:
         
         num_books_parsable = (self.all_days - self.day - signup) * (number_of_scan)
         lst = list(new_books)[:num_books_parsable]
-        for i in lst:
-            self.book_vals[i] = 0
+        # for i in lst:
+        #     self.book_vals[i] = 0
         new_books = set(lst)
         self.processed = self.processed.union(new_books)
 
