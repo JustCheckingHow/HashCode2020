@@ -10,7 +10,7 @@ import os
 fname = sys.argv[1]
 clf = NaiveAlgo()
 save_folder = 'data'
-fname = glob.glob(f"{save_folder}/{fname}*.txt")[0].replace('\\', '/')
+fname = glob.glob(f"{save_folder}/*.txt")[0].replace('\\', '/')
 # We only need to specify the algorithm and hyperparameters to use:
 config = {
     # We pick the Bayes algorithm:
