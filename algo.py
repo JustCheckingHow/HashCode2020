@@ -60,6 +60,7 @@ class NaiveAlgo:
                 if not self.any_parsable():
                     break
 
+        self.counter.summary()
         return result_dict, efficiency
 
     def get_parsable_books(self, sorted_books, number_of_scan, signup):
@@ -71,7 +72,7 @@ class NaiveAlgo:
         lst = list(new_books)[:num_books_parsable]
         new_books = set(lst)
         self.processed = self.processed.union(new_books)
-        
+
         return new_books
 
 

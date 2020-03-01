@@ -8,6 +8,10 @@ class Library:
         self.books = np.array(books).astype(int)
         self._mapped = None
 
+        self.A = 1
+        self.B = 3
+        self.C = 3
+
     @staticmethod
     def parse(line1, line2, id):
         signup_time = int(line1.split(" ")[1])
@@ -24,4 +28,4 @@ class Library:
     def get_efficiency(self, val_map, day_no):
         mapped = self.get_mapped(val_map)
 
-        return (np.sum(mapped)/self.signup_time)*(self.number_of_scans**2)
+        return (np.sum(mapped) ** self.A/(self.signup_time ** self.B))*(self.number_of_scans**self.C)
