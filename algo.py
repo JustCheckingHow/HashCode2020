@@ -6,6 +6,7 @@ import pandas as pd
 import tqdm
 
 from parser_books import parse_data
+from score_counter import ScoreCounter
 from utils import Library
 
 
@@ -18,6 +19,8 @@ class NaiveAlgo:
         self.day = 0
         self.freq = defaultdict(int)
         self.prepare()
+        # initialise score counter 
+        self.counter = ScoreCounter(book_vals)
 
         # params
         if param_dict is None:
@@ -72,11 +75,15 @@ class NaiveAlgo:
                                           lib.signup_time)
             if len(res) != 0:
                 result_dict[i] = res
+                self.counter.add(list(res))
+
                 self.day += lib.signup_time
 
             if self.day > self.all_days:
                 break
 
+        print(self.counter.score)
+        print(len(self.counter.processed))
         return result_dict, efficiency
 
     def get_parsable_books(self, sorted_books, number_of_scans, signup):
@@ -85,8 +92,8 @@ class NaiveAlgo:
         num_books_parsable = (self.all_days - self.day -
                               signup) * (number_of_scans)
         lst = list(new_books)[:num_books_parsable]
-        for i in lst:
-            self.book_vals[i] = 0
+        # for i in lst:
+        #     self.book_vals[i] = 0
         new_books = set(lst)
         self.processed = self.processed.union(new_books)
 

@@ -26,6 +26,7 @@ if __name__ == "__main__":
             f = fname.split('\\')[-1]
             save_output(f"3_solution_{f}", libs)
     else:
+        fname = glob.glob(f"data/{fname}*.txt")[0].replace('\\', '/')
         libs, books_values, days = parse_data(fname)
         algo = NaiveAlgo(libs, books_values, days)
         libs, _ = algo.solve()
