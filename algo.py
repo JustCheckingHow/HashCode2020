@@ -13,20 +13,19 @@ from multiprocessing import Pool
 
 class NaiveAlgo:
     def __init__(self,
-                 _number_of_scan_weight=1,
                  _number_of_scans_power=2,
-                 _signup_time_weight=1,
-                 _mapped_sum_weight=1):
+                 _signup_power=1,
+                 _mapped_power=1):
         # params
         self._number_of_scans_power = _number_of_scans_power
-        self._number_of_scan_weight = _number_of_scan_weight
+        self._mapped_power = _mapped_power
 
-        self._signup_time_weight = _signup_time_weight
-        self._mapped_sum_weight = _mapped_sum_weight
+        self._signup_power = _signup_power
 
         self.param_names = [
-            '_number_of_scans_power', '_number_of_scan_weight',
-            '_signup_time_weight', '_mapped_sum_weight'
+            '_number_of_scans_power',
+            '_mapped_power',
+            '_signup_power',
         ]
 
     def get_params(self, deep=False):
@@ -43,10 +42,9 @@ class NaiveAlgo:
         Set the internal params of the model 
         """
         self._number_of_scans_power = kwargs['_number_of_scans_power']
-        self._number_of_scan_weight = kwargs['_number_of_scan_weight']
+        self._signup_power = kwargs['_signup_power']
 
-        self._signup_time_weight = kwargs['_signup_time_weight']
-        self._mapped_sum_weight = kwargs['_mapped_sum_weight']
+        self._mapped_power = kwargs['_mapped_power']
 
     def get_books_priority(self, library):
         mapped = [self.book_vals[i] / self.freq[i] for i in library.books]
@@ -59,6 +57,10 @@ class NaiveAlgo:
         for lib in self.libraries:
             for book in lib.books:
                 self.freq[book] += 1
+
+    def any_parsable(self):
+        remaining = self.all_days - self.day
+        return np.any([lib.signup_time <= remaining for lib in self.libraries])
 
     def solve(self):
         self.param_dict = self.get_params()
@@ -78,20 +80,26 @@ class NaiveAlgo:
                 self.counter.add(list(res))
 
                 self.day += lib.signup_time
+                self.consecutive_deadlines = 0
+            else:
+                self.consecutive_deadlines += 1
+            if self.consecutive_deadlines >= self.threshold:
+                if not self.any_parsable():
+                    break
 
             if self.day > self.all_days:
                 break
-
+        
+        self.counter.params = self.param_dict
+        self.counter.summary()
         return result_dict, efficiency
 
     def get_parsable_books(self, sorted_books, number_of_scans, signup):
         new_books = set(sorted_books) - self.processed
 
-        num_books_parsable = (self.all_days - self.day -
-                              signup) * (number_of_scans)
+        num_books_parsable = max(0, (self.all_days - self.day - signup) *
+                                 (number_of_scans))
         lst = list(new_books)[:num_books_parsable]
-        # for i in lst:
-        #     self.book_vals[i] = 0
         new_books = set(lst)
         self.processed = self.processed.union(new_books)
 
@@ -104,15 +112,15 @@ class NaiveAlgo:
         # data
         input_dat, param_names, params = inputs[0], inputs[1], inputs[2]
         libs, books_values, days = input_dat[0], input_dat[1], input_dat[2]
-        param_dict = {
-            k: v for k, v in zip(param_names, params)
-        }
+        param_dict = {k: v for k, v in zip(param_names, params)}
         self.set_params(**param_dict)
 
         self.libraries = np.array(libs)
         self.book_vals = books_values
         self.processed = set()
         self.all_days = days
+        self.consecutive_deadlines = 0
+        self.threshold = 15
         self.day = 0
         self.freq = defaultdict(int)
         self.prepare()
@@ -130,9 +138,9 @@ class NaiveAlgo:
                                       for param_comb in groups])
 
             max_res = 0
-            max_params = None 
+            max_params = None
             for res in result:
-                pm, score = res 
+                pm, score = res
                 if score > max_res:
                     max_res = score
                     max_params = pm

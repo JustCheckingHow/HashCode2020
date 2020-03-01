@@ -25,6 +25,6 @@ class Library:
     def get_efficiency(self, val_map, day_no, **kwargs):
         mapped = self.get_mapped(val_map)
 
-        return (np.sum(mapped) /
-                (self.signup_time)) * (self.number_of_scans**
+        return (np.sum(mapped)**kwargs['_mapped_power'] /
+                (self.signup_time**kwargs['_signup_power'])) * (self.number_of_scans**
                                        kwargs['_number_of_scans_power'])
