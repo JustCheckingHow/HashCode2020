@@ -29,34 +29,19 @@ class NaiveAlgo:
                 self.freq[book] += 1
 
     def solve(self):
-
-
         result_dict = {}
+        efficiency_vals = [i.get_efficiency(self.book_vals, self.all_days) for i in self.libraries]
+        efficiency = np.argsort(efficiency_vals)[::-1]
+        
+        for i, lib in zip(tqdm.tqdm(efficiency), self.libraries[efficiency]):
+            sorted_books = lib.books[self.get_books_priority(lib)[::-1]]
+            res = self.get_parsable_books(sorted_books, lib.number_of_scans, lib.signup_time)
+            if len(res)!=0:
+                result_dict[i] = res
+                self.day += lib.signup_time
 
-        # for i, lib in zip(tqdm.tqdm(efficiency), self.libraries[efficiency]):
-        #     sorted_books = lib.books[self.get_books_priority(lib)[::-1]]
-        #     res = self.get_parsable_books(sorted_books, lib.number_of_scans, lib.signup_time)
-        #     if len(res)!=0:
-        #         result_dict[i] = res
-        #         self.day += lib.signup_time
-
-        #     if self.day>self.all_days:
-        #         break
-
-        while self.all_days > self.day:
-            efficiency_vals = [i.get_efficiency(self.book_vals, self.all_days) for i in self.libraries]
-            efficiency = np.argsort(efficiency_vals)[::-1]
-            for row in range(500):
-                lib_id = efficiency[row]
-                lib = self.libraries[lib_id]
-
-                sorted_books = lib.books[self.get_books_priority(lib)[::-1]]
-                res = self.get_parsable_books(sorted_books, lib.number_of_scans, lib.signup_time)
-                if len(res)!=0:
-                    result_dict[lib.id] = res
-                    self.day += lib.signup_time
-                    self.libraries = np.delete(self.libraries, lib.id)
-                
+            if self.day>self.all_days:
+                break
 
         return result_dict, efficiency
 
