@@ -46,8 +46,9 @@ class NaiveAlgo:
 
             if self.day>self.all_days:
                 break
-            
+
         print(self.counter.score)
+        print(len(self.counter.processed))
         return result_dict, efficiency
 
     def get_parsable_books(self, sorted_books, number_of_scan, signup):

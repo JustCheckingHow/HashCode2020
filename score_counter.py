@@ -11,4 +11,3 @@ class ScoreCounter:
             if book not in self.processed:
                 self.processed.add(book)
                 self.score += self.book_vals[book]
-        
