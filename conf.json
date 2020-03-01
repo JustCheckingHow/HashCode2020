@@ -1,0 +1,27 @@
+{
+    "algorithm": "bayes",
+
+    "parameters": {
+        "_number_of_scans_power": {
+            "type": "float",
+            "min": 0.1,
+            "max": 6
+        },
+        '_mapped_power': {
+            'type': 'float',
+            'min': 0.1,
+            'max': 6,
+        },
+        '_signup_power': {
+            'type': 'float',
+            'min': 0.1,
+            'max': 6,
+        },
+    },
+
+    "spec": {
+        "metric": "score",
+        "objective": "maximise",
+    },
+}
+

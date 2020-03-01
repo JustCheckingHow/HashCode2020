@@ -3,11 +3,11 @@ from algo import NaiveAlgo, save_output
 from parser_books import parse_data
 
 import glob
-import sys 
-import os 
+import sys
+import os
 
 
-fname = sys.argv[1]
+fname = 'c'
 clf = NaiveAlgo()
 save_folder = 'data'
 fname = glob.glob(f"{save_folder}/*.txt")[0].replace('\\', '/')
@@ -62,7 +62,7 @@ parameters = {
 for experiment in opt.get_experiments():
     # Test the model
     params = {}
-    for p in ['_number_of_scans_power', '_mapped_power', 
+    for p in ['_number_of_scans_power', '_mapped_power',
              '_signup_power']:
         params[p] = experiment.get_parameter(p)
     max_libs, _, score = clf.fit([[libs, books_values, days],
