@@ -12,6 +12,10 @@ class Library:
         self.C = 0
         self.D = 0
 
+        self.A = 1
+        self.B = 3
+        self.C = 3
+
     @staticmethod
     def parse(line1, line2, id):
         signup_time = int(line1.split(" ")[1])

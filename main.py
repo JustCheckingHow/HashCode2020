@@ -8,11 +8,11 @@ from multiprocessing import Pool
 def save_output(filename, libs):
     f = open(filename, 'w+')
 
-    f.write(str(len(libs)) + '\n')
+    f.write(str(len(libs)) + "\n")
     for ID in libs:
         f.write(f"{ID} {len(libs[ID])}\n")
-        out_str = ' '.join([str(l) for l in list(libs[ID])])
-        f.write(out_str + '\n')
+        out_str = " ".join([str(l) for l in list(libs[ID])])
+        f.write(out_str + "\n")
 
     f.close()
 
@@ -36,6 +36,7 @@ def calc(A):
                 libs[i].C = C
             algo = NaiveAlgo(libs, books_values, days)
             libs, _ = algo.solve()
+<<<<<<< HEAD
             points = algo.counter.score
             maxi = max(maxi, points)
             if points == maxi:
@@ -54,3 +55,17 @@ if __name__ == "__main__":
         out = p.map(calc, arr)
     
     print(out)
+=======
+            points += algo.counter.score
+
+            f = fname.split("\\")[-1]
+            save_output(f"3_solution_{f}", libs)
+    else:
+        fname = glob.glob(f"data/{fname}*.txt")[0].replace("\\", "/")
+        libs, books_values, days = parse_data(fname)
+        algo = NaiveAlgo(libs, books_values, days)
+        libs, _ = algo.solve()
+        save_output(f"solution_{fname.split('/')[-1]}", libs)
+
+    print(points)
+>>>>>>> 0a1d55be895b36c8b0114e30d888c9e3ef7b7523
