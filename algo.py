@@ -16,8 +16,9 @@ class NaiveAlgo:
         self.day = 0
         self.freq = defaultdict(int)
         self.prepare()
-
         self.counter = ScoreCounter(book_vals)
+        self.consecutive_deadlines = 0
+        self.threshold = 150
 
     def get_books_priority(self, library):
         mapped = [self.book_vals[i] / self.freq[i] for i in library.books]
@@ -30,6 +31,10 @@ class NaiveAlgo:
         for lib in self.libraries:
             for book in lib.books:
                 self.freq[book] += 1
+
+    def any_parsable(self):
+        remaining = self.all_days-self.day
+        return not np.any([lib.signup_time<=remaining for lib in self.libraries])
 
     def solve(self):
         result_dict = {}
@@ -48,11 +53,13 @@ class NaiveAlgo:
                 self.counter.add(list(res))
 
                 self.day += lib.signup_time
+                self.consecutive_deadlines = 0
+            else:
+                self.consecutive_deadlines += 1
+            if self.consecutive_deadlines>=self.threshold:
+                if self.any_parsable():
+                    break
 
-            if self.day > self.all_days:
-                break
-
-        self.counter.summary()
         return result_dict, efficiency
 
     def get_parsable_books(self, sorted_books, number_of_scan, signup):
@@ -64,7 +71,7 @@ class NaiveAlgo:
         lst = list(new_books)[:num_books_parsable]
         new_books = set(lst)
         self.processed = self.processed.union(new_books)
-
+        
         return new_books
 
 
