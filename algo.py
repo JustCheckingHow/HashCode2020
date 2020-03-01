@@ -35,7 +35,7 @@ class NaiveAlgo:
         efficiency_vals = [i.get_efficiency(self.book_vals, self.all_days) for i in self.libraries]
         efficiency = np.argsort(efficiency_vals)[::-1]
         
-        for i, lib in zip(tqdm.tqdm(efficiency), self.libraries[efficiency]):
+        for i, lib in zip(efficiency, self.libraries[efficiency]):
             sorted_books = lib.books[self.get_books_priority(lib)[::-1]]
             res = self.get_parsable_books(sorted_books, lib.number_of_scans, lib.signup_time)
             if len(res)!=0:
