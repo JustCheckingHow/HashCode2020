@@ -122,7 +122,7 @@ def visualise_time(filename):
     plt.show()
 # <<<<<<< HEAD
 # # visualise_time('data/b_read_on.txt')
-# # visualise_basic('data/d_tough_choices.txt')
+# visualise_time('data/d_tough_choices.txt')
 # # visualise_time('data/e_so_many_books.txt')
 # visualise_time('data/c_incunabula.txt')
 # =======
@@ -131,5 +131,5 @@ def visualise_time(filename):
 # visualise_basic('data/c_incunabula.txt')
 # =======
 # # visualise_basic('data/d_tough_choices.txt')
-# visualise_time('data/e_so_many_books.txt')
+visualise_time('data/e_so_many_books.txt')
 
