@@ -55,8 +55,6 @@ class NaiveAlgo:
         
         num_books_parsable = max(0, (self.all_days - self.day - signup) * (number_of_scan))
         lst = list(new_books)[:num_books_parsable]
-        # for i in lst:
-        #     self.book_vals[i] = 0
         new_books = set(lst)
         self.processed = self.processed.union(new_books)
 

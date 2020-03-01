@@ -18,11 +18,14 @@ def save_output(filename, libs):
 
 if __name__ == "__main__":
     fname = sys.argv[1]
+    points = 0
     if fname == "all":
         for fname in glob.glob("data/*.txt"):
             libs, books_values, days = parse_data(fname)
             algo = NaiveAlgo(libs, books_values, days)
             libs, _ = algo.solve()
+            points += algo.counter.score
+
             f = fname.split('\\')[-1]
             save_output(f"3_solution_{f}", libs)
     else:
@@ -31,3 +34,5 @@ if __name__ == "__main__":
         algo = NaiveAlgo(libs, books_values, days)
         libs, _ = algo.solve()
         save_output(f"solution_{fname.split('/')[-1]}", libs)
+
+    print(points)
